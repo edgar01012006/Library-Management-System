@@ -18,4 +18,19 @@ class ISBNNotFoundException : LibraryExceptions {
         ISBNNotFoundException(const std::string& msg) : LibraryExceptions(msg) {}
 };
 
+class DuplicateBookException : LibraryExceptions {
+    public:
+        DuplicateBookException(const std::string& msg) : LibraryExceptions(msg) {}
+};
+
+class BorrowedBooksLimitReachedException : LibraryExceptions {
+    public:
+        BorrowedBooksLimitReachedException(const std::string& msg) : LibraryExceptions(msg) {}
+};
+
+class BookNotFoundException : LibraryExceptions {
+    public:
+        BookNotFoundException(const std::string& msg) : LibraryExceptions(msg) {}
+};
+
 #endif
