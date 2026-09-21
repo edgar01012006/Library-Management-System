@@ -27,8 +27,12 @@ std::weak_ptr<Book> Repository::getBookByISBN(int ISBN) const {
 }
 
 void Repository::displayBooksCatalog() const {
+    if (m_books.empty()) {
+        std::cout << "No books found in database\n";
+    }
+    
     for (const auto& [ISBN, book] : m_books) {
-        std::cout << book;
+        std::cout << *book << "\n";
     }
 }
 

@@ -3,34 +3,39 @@
 
 #include <stdexcept>
 
-class LibraryExceptions : std::runtime_error {
+class LibraryExceptions : public std::runtime_error {
     public:
         LibraryExceptions(const std::string& msg) : std::runtime_error(msg) {}
 };  
 
-class DuplicateISBNException : LibraryExceptions {
+class DuplicateISBNException : public LibraryExceptions {
     public:
         DuplicateISBNException(const std::string& msg) : LibraryExceptions(msg) {}
 };
 
-class ISBNNotFoundException : LibraryExceptions {
+class ISBNNotFoundException : public LibraryExceptions {
     public:
         ISBNNotFoundException(const std::string& msg) : LibraryExceptions(msg) {}
 };
 
-class DuplicateBookException : LibraryExceptions {
+class DuplicateBookException : public LibraryExceptions {
     public:
         DuplicateBookException(const std::string& msg) : LibraryExceptions(msg) {}
 };
 
-class BorrowedBooksLimitReachedException : LibraryExceptions {
+class BorrowedBooksLimitReachedException : public LibraryExceptions {
     public:
         BorrowedBooksLimitReachedException(const std::string& msg) : LibraryExceptions(msg) {}
 };
 
-class BookNotFoundException : LibraryExceptions {
+class BookNotFoundException : public LibraryExceptions {
     public:
         BookNotFoundException(const std::string& msg) : LibraryExceptions(msg) {}
+};
+
+class MemberNotFoundException : public LibraryExceptions {
+    public:
+        MemberNotFoundException(const std::string& msg) : LibraryExceptions(msg) {}
 };
 
 #endif

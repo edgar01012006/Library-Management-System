@@ -9,6 +9,7 @@
 #include <iostream>
 #include "Member.hpp"
 #include "Book.hpp"
+#include "Repository.hpp"
 
 class Library {
     private:
@@ -20,16 +21,18 @@ class Library {
     public:
         void registerMember(const std::string& name);
 
-        void reserveBook(std::weak_ptr<Member>& member, const std::weak_ptr<Book>& book);
-        void issueBook(std::weak_ptr<Member>& member, const std::weak_ptr<Book>& book);
-        void returnBook(std::weak_ptr<Member>& member, const std::weak_ptr<Book>& book);
+        void reserveBook(std::weak_ptr<Member> member, const std::weak_ptr<Book>& book);
+        void issueBook(std::weak_ptr<Member> member, const std::weak_ptr<Book>& book);
+        void returnBook(std::weak_ptr<Member> member, const std::weak_ptr<Book>& book);
         void updateReservation(const std::weak_ptr<Book>& book);
 
         void displayAllMembers() const;
-        
-        std::weak_ptr<Member> getMemberByID(int ID);
 
-        void interface();
+        void updateInvalidReservation(const Repository& repository, int ISBN);
+        
+        std::weak_ptr<Member> getMemberByID(int ID) const;
+
+        void interface(Repository& repository);
 };
 
 #endif
