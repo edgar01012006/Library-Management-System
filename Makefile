@@ -18,7 +18,7 @@ OBJ = $(SRC:.cpp=.o)
 # =========================
 # Target executable
 # =========================
-TARGET = libratrack
+TARGET = library
 
 # =========================
 # OS-specific settings

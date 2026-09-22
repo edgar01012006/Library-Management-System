@@ -7,6 +7,8 @@
 #include <queue>
 #include <memory>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include "Member.hpp"
 #include "Book.hpp"
 #include "Repository.hpp"
@@ -29,8 +31,12 @@ class Library {
         void displayAllMembers() const;
 
         void updateInvalidReservation(const Repository& repository, int ISBN);
+        void deleteAllMembers();
         
         std::weak_ptr<Member> getMemberByID(int ID) const;
+
+        void saveMembers(const std::string& fileName);
+        void loadMembers(const std::string& fileName);
 
         void interface(Repository& repository);
 };

@@ -36,4 +36,53 @@ void Repository::displayBooksCatalog() const {
     }
 }
 
-// void Repository::displayBooksByGenre(const std::string& genre)
+void Repository::deleteAllBooks() {
+    m_books.clear();
+}
+
+void Repository::saveBooks(const std::string& fileName) {
+    std::ofstream file(fileName);
+
+    if (!file.is_open()) {
+        std::cerr << "Failed to open the file\n";
+        return;
+    }
+
+    for (const auto&[ISBN, Book]: m_books) {
+        file << Book->getISBN() << ","
+             << Book->getName() << ","
+             << Book->getAuthor() << ","
+             << Book->getGenre() << "\n";
+    }
+
+    file.close();
+}
+
+void Repository::loadBooks(const std::string& fileName) {
+    std::ifstream file(fileName);
+
+    if (!file.is_open()) {
+        std::cerr << "Failed to open the file\n";
+        return;
+    }
+
+    std::string line{};
+
+    while (std::getline(file, line)) {
+        std::stringstream ss(line);
+
+        std::string ISBN{};
+        std::string name;
+        std::string author;
+        std::string genre;
+
+        std::getline(ss, ISBN, ',');
+        std::getline(ss, name, ',');
+        std::getline(ss, author, ',');
+        std::getline(ss, genre, ',');
+
+        addBook(std::stoi(ISBN), name, author, genre);
+    }
+
+    file.close();
+}

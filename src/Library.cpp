@@ -64,6 +64,11 @@ void Library::updateInvalidReservation(const Repository& repository, int ISBN) {
     }
 }
 
+void Library::deleteAllMembers() {
+    m_members.clear();
+    Library::m_IDCounter = 1;
+}
+
 std::weak_ptr<Member> Library::getMemberByID(int ID) const {
     if (m_members.find(ID) == m_members.end()) {
         throw MemberNotFoundException("Member with the ID-" + std::to_string(ID) + " not found");
@@ -71,10 +76,56 @@ std::weak_ptr<Member> Library::getMemberByID(int ID) const {
     return m_members.at(ID);
 }
 
+void Library::saveMembers(const std::string& fileName) {
+    std::ofstream file(fileName);
+    
+    if (!file.is_open()) {
+        std::cerr << "Failed to open the file\n";
+        return;
+    }
+
+    for (const auto& [ID, member]: m_members) {
+        file << member->getName() << "\n";
+    }
+
+    file.close();
+}
+
+void Library::loadMembers(const std::string& fileName) {
+    std::ifstream file(fileName);
+    if (!file.is_open()) {
+        std::cerr << "Failed to opent he file\n";
+        return;
+    }
+
+    deleteAllMembers();
+
+    std::string line{};
+
+    while (std::getline(file, line)) {
+        std::stringstream ss(line);
+        
+        std::string name{};
+
+        std::getline(ss, name, ',');
+
+        registerMember(name);
+    }
+
+    file.close();
+}
+
 void Library::interface(Repository& repository) {
+    // pre made for testing
+    registerMember("User1");
+    registerMember("User2");
+    repository.addBook(10, "Book1", "Author1", "Genre1");
+    repository.addBook(11, "Book2", "Author2", "Genre2");
+    repository.addBook(12, "Book3", "Author3", "Genre3");
+
     std::cout << "Welcome to the library. Here are the features currently available"; 
     int userInput{};
-      
+
     do {
         std::cout << "\n0: Quit the program\n"
                   << "1: Register a member\n"
@@ -84,11 +135,20 @@ void Library::interface(Repository& repository) {
                   << "5: Remove a book\n"
                   << "6: Display books catalog\n"
                   << "7: Display all members\n"
+                  << "8. Save members data\n"
+                  << "9: Load members data\n"
+                  << "10: Save books data\n"
+                  << "11: Load books data\n"
+                  << "12: Delete all members\n"
+                  << "13: Delete all books\n"
                   << "Enter the number for the feature you would like to try out\n"; 
         std::cin >> userInput;
         std::cout << "\n";
 
         switch (userInput) {
+            case 0: {
+                return;
+            }
             case 1: {
                 std::string username{};
                 std::cout << "Enter your name\n";
@@ -164,7 +224,32 @@ void Library::interface(Repository& repository) {
                 displayAllMembers();
                 break;
             }
-            default:
+            case 8: {
+                saveMembers("MemberData.txt");
+                break;
+            }
+            case 9: {
+                loadMembers("MemberData.txt");
+                break;
+            }
+            case 10: {
+                repository.saveBooks("BooksData.txt");
+                break;
+            }
+            case 11: {
+                repository.loadBooks("BooksData.txt");
+                break;
+            }
+            case 12: {
+                deleteAllMembers();
+                break;
+            }
+            case 13: {
+                repository.deleteAllBooks();
+                break;
+            }
+            default:    
+                std::cout << userInput << "No feature avaiable with this input " << userInput << "\n";
                 break;
         }
     } while (userInput != 0);

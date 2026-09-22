@@ -18,6 +18,3 @@ std::ostream& operator<<(std::ostream& ostr, const Book& book) {
 
     return ostr;
 }
-
-// bool operator==(const int ISBN, const std::string& name);
-// bool operator==(const std::string& name, const int ISBN);

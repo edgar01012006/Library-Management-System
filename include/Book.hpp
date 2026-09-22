@@ -21,8 +21,6 @@ class Book {
         std::string getGenre() const;
 
         friend std::ostream& operator<<(std::ostream& ostr, const Book& book);
-        // friend bool operator==(const int ISBN, const std::string& name);
-        // friend bool operator==(const std::string& name, const int ISBN);
 };
 
 #endif

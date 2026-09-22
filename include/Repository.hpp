@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include "Book.hpp"
 #include <memory>
+#include <fstream>
+#include <sstream>
 
 class Repository {
     private:
@@ -15,7 +17,11 @@ class Repository {
 
         std::weak_ptr<Book> getBookByISBN(int ISBN) const;
         void displayBooksCatalog() const;
-        // void displayBooksByGenre(const std::string& genre)
+
+        void deleteAllBooks();
+
+        void saveBooks(const std::string& fileName);
+        void loadBooks(const std::string& fileName);
 };
 
 #endif
