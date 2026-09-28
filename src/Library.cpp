@@ -22,16 +22,16 @@ void Library::issueBook(std::weak_ptr<Member> member, const std::weak_ptr<Book>&
     std::shared_ptr<Book> tmpBook = book.lock();
     std::shared_ptr<Member> tmpMember = member.lock();
     
-    m_borrowedBooksList.insert(tmpBook->getISBN());
     tmpMember->borrowBook(book);
+    m_borrowedBooksList.insert(tmpBook->getISBN());
 }
 
 void Library::returnBook(std::weak_ptr<Member> member, const std::weak_ptr<Book>& book) {
     std::shared_ptr<Book> tmpBook = book.lock();
     std::shared_ptr<Member> tmpMember = member.lock();
     
-    m_borrowedBooksList.erase(tmpBook->getISBN());
     tmpMember->returnBook(book);
+    m_borrowedBooksList.erase(tmpBook->getISBN());
 
     updateReservation(book);
 }
@@ -40,8 +40,12 @@ void Library::updateReservation(const std::weak_ptr<Book>& book) {
     std::shared_ptr<Book> tmpBook = book.lock();
 
     if (m_reservations.find(tmpBook->getISBN()) != m_reservations.end()) {
-        issueBook(m_reservations.at(tmpBook->getISBN()).front(), book);
-        m_reservations.at(tmpBook->getISBN()).pop();
+        if (!m_reservations.at(tmpBook->getISBN()).empty()) {
+            issueBook(m_reservations.at(tmpBook->getISBN()).front(), book);
+            m_reservations.at(tmpBook->getISBN()).pop();
+        } else {
+            m_reservations.erase(tmpBook->getISBN());
+        }
     }
 }
 

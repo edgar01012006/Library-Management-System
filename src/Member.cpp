@@ -12,6 +12,8 @@ const std::vector<std::weak_ptr<Book>>& Member::getBorrowedBooks() const {
 }
 
 void Member::borrowBook(std::weak_ptr<Book> book) {
+    updatebBorrowedBooks();
+
     std::shared_ptr tmpBook = book.lock();
     for (const auto& borrowedBook: m_borrowedBooks) {
         std::shared_ptr<Book> tmpBorrowedBook = borrowedBook.lock();
